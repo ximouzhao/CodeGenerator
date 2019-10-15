@@ -80,7 +80,6 @@ public class GeneratorConfig {
         SqlMapGeneratorConfiguration javaTypeRolv=config.getContexts().get(0).getSqlMapGeneratorConfiguration();
         javaTypeRolv.setTargetPackage(targetPackage+".mapping");
         javaTypeRolv.setTargetProject(targetProject);
-
         config.getContexts().get(0).getTableConfigurations().get(0).setTableName(tablename);
         return config;
     }
