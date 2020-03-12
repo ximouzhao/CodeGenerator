@@ -24,6 +24,7 @@ public class GeneratorConfig {
     public static String userId;
     public static String password;
     public static String tablename;
+    public static String catalog;
     public static String targetPackage;
     public static String targetProject;
 
@@ -47,6 +48,7 @@ public class GeneratorConfig {
                 userId=prop.getProperty("userId");
                 password=prop.getProperty("password");
                 tablename=prop.getProperty("tablename");
+                catalog=connectionURL.substring(connectionURL.lastIndexOf("/")+1,connectionURL.lastIndexOf("?"));
                 targetPackage=prop.getProperty("targetPackage");
                 targetProject=prop.getProperty("targetProject");
             }catch (IOException e){
@@ -81,6 +83,7 @@ public class GeneratorConfig {
         javaTypeRolv.setTargetPackage(targetPackage+".mapping");
         javaTypeRolv.setTargetProject(targetProject);
         config.getContexts().get(0).getTableConfigurations().get(0).setTableName(tablename);
+        config.getContexts().get(0).getTableConfigurations().get(0).setCatalog(catalog);
         return config;
     }
 }

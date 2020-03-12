@@ -34,6 +34,7 @@ public class YApiGenerator {
         List<Map<String,String>> list= new ArrayList<Map<String, String>>();
         while(rs.next()){
             HashMap<String,String> info=new HashMap<String, String>();
+            System.out.print(rs.getInt("DATA_TYPE")+"\t");
             System.out.print(DataTypeCodeYApiMap.get(rs.getInt("DATA_TYPE"))+"\t");
             System.out.print(rs.getInt("COLUMN_SIZE")+"\t");
             System.out.print(rs.getString("COLUMN_NAME")+"\t");

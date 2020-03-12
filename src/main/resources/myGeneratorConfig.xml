@@ -2,6 +2,9 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
   <context id="context1">
+      <plugin type="com.ximouzhao.myBatisGenerator.LombokPlugin" >
+          <property name="hasLombok" value="true"/>
+      </plugin>
       <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
  		 <commentGenerator  type="com.ximouzhao.myBatisGenerator.MyCommentGenerator">
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -24,7 +27,8 @@
       <table schema="" tableName="xxx"
              enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
              enableSelectByExample="false" selectByExampleQueryId="false" >
-          <property name="useActualColumnNames" value="true"/>
-	</table>
+          <property name="useActualColumnNames" value="false"/>
+          <columnOverride column="company" javaType="java.lang.String" jdbcType="VARCHAR" />
+      </table>
   </context>
 </generatorConfiguration>

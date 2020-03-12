@@ -35,7 +35,6 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         currentDateStr = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
     }
 
-
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable,
                                 IntrospectedColumn introspectedColumn) {
@@ -46,26 +45,27 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         field.addJavaDocLine("/**");
         sb.append(" * ");
         sb.append(removeLineBreaks(introspectedColumn.getRemarks()));
-        sb.append("\n\t * @Column(name = \"" + removeLineBreaks(introspectedColumn.getActualColumnName()) + "\")");
+        //sb.append("\n\t * @Column(name = \"" + removeLineBreaks(introspectedColumn.getActualColumnName()) + "\")");
 
         List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
         for (IntrospectedColumn col : primaryKeyColumns) {
             if (col.getActualColumnName().equals(introspectedColumn.getActualColumnName())) {
-                sb.append("\n\t * @Id");
+                //sb.append("\n\t * @Id");
+                field.addAnnotation("@Id");
+                //field.addAnnotation("@GeneratedValue(strategy = GenerationType.IDENTITY)");
             }
         }
         field.addJavaDocLine(sb.toString());
         field.addJavaDocLine(" */");
         /*除开id的其他字段上生成@Column注解*/
-        //field.addAnnotation("@Column(name = \"" + introspectedColumn.getActualColumnName() + "\")");
-        if(!introspectedColumn.isNullable()){
+        field.addAnnotation("@Column(name = \"" + introspectedColumn.getActualColumnName() + "\")");
+        /*if(!introspectedColumn.isNullable()){
             if(introspectedColumn.getJdbcType()==12){
                 field.addAnnotation("@NotBlank(message = \"" + introspectedColumn.getRemarks() + "不能为空\")");
             }else{
                 field.addAnnotation("@NotNull(message = \"" + introspectedColumn.getRemarks() + "不能为空\")");
             }
-
-        }
+        }*/
     }
     public static String removeLineBreaks(String inStr){
         return inStr.replace("\n", " ");
@@ -76,6 +76,11 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
 //        topLevelClass.addImportedType("javax.persistence.Id");
 //        topLevelClass.addImportedType("javax.persistence.Table");
 //        topLevelClass.addImportedType("org.apache.ibatis.type.Alias");
+        topLevelClass.addImportedType("lombok.Data");
+        topLevelClass.addImportedType("lombok.experimental.Accessors");
+        topLevelClass.addImportedType("javax.persistence.*");
+        topLevelClass.addImportedType("javax.validation.constraints.NotBlank");
+        topLevelClass.addImportedType("org.hibernate.annotations.DynamicUpdate");
 
         if (suppressAllComments) {
             return;
@@ -93,15 +98,21 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
         topLevelClass.addJavaDocLine(sb.toString());
         sb.setLength(0);
         sb.append(" * @author ");
-        sb.append(systemPro.getProperty("user.name"));
+        //sb.append(systemPro.getProperty("user.name"));
+        sb.append("zhaoxm");
         sb.append(" ");
         sb.append(currentDateStr);
-        sb.append("\n * @Table(name = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
+        //sb.append("\n * @Table(name = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
         topLevelClass.addJavaDocLine(sb.toString());
         // addJavadocTag(innerClass, markAsDoNotDelete);
 
         topLevelClass.addJavaDocLine(" */");
         //topLevelClass.addAnnotation("@Table(name = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
+        topLevelClass.addAnnotation("@Data");
+        topLevelClass.addAnnotation("@Accessors(chain = true)");
+        //topLevelClass.addAnnotation("@DynamicUpdate");
+        //topLevelClass.addAnnotation("@Entity");
+        topLevelClass.addAnnotation("@Table(name=\""+introspectedTable.getFullyQualifiedTable() +"\")");
     }
 
     @Override
@@ -113,6 +124,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
     public void addGeneralMethodComment(Method method, IntrospectedTable introspectedTable) {
 
     }
+
 
     @Override
     public void addGetterComment(Method method, IntrospectedTable introspectedTable,
